@@ -1,13 +1,33 @@
-package com.codepath.apps.restclienttemplate;
+package com.codepath.apps.mysimpletweets;
 
 import org.scribe.builder.api.Api;
 import org.scribe.builder.api.FlickrApi;
+import org.scribe.builder.api.TwitterApi;
 
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+
+
+//Access level	Read and write (modify app permissions)
+//		Consumer Key (API Key)	CqRB8kgsuUntsdnGR57oSRGzV (manage keys and access tokens)
+//		Callback URL	http://akshaykhole.com
+//		Callback URL Locked	No
+//		Sign in with Twitter	Yes
+//		App-only authentication	https://api.twitter.com/oauth2/token
+//		Request token URL	https://api.twitter.com/oauth/request_token
+//		Authorize URL	https://api.twitter.com/oauth/authorize
+//		Access token URL	https://api.twitter.com/oauth/access_token
+
+
+
+//Consumer Key (API Key)	CqRB8kgsuUntsdnGR57oSRGzV
+//        Consumer Secret (API Secret)	9m0F3KhOA1XzhFnVAQzoQIyYomm8SWc8HOyi13Q6FbpL5aLQqx
+//        Access Level	Read and write (modify app permissions)
+//        Owner	_akshaykhole
+//        Owner ID	2432446208
 
 /*
  * 
@@ -21,14 +41,14 @@ import com.loopj.android.http.RequestParams;
  * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
-public class RestClient extends OAuthBaseClient {
-	public static final Class<? extends Api> REST_API_CLASS = FlickrApi.class; // Change this
-	public static final String REST_URL = "https://api.flickr.com/services"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "SOME_KEY";       // Change this
-	public static final String REST_CONSUMER_SECRET = "SOME_SECRET"; // Change this
-	public static final String REST_CALLBACK_URL = "oauth://cprest"; // Change this (here and in manifest)
+public class TwitterClient extends OAuthBaseClient {
+	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
+	public static final String REST_URL = "https://api.twitter.com/1.1/"; // Change this, base API URL
+	public static final String REST_CONSUMER_KEY = "CqRB8kgsuUntsdnGR57oSRGzV";       // Change this
+	public static final String REST_CONSUMER_SECRET = "9m0F3KhOA1XzhFnVAQzoQIyYomm8SWc8HOyi13Q6FbpL5aLQqx"; // Change this
+	public static final String REST_CALLBACK_URL = "oauth://cpsimpletweets"; // Change this (here and in manifest)
 
-	public RestClient(Context context) {
+	public TwitterClient(Context context) {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
