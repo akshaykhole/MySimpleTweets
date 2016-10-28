@@ -4,6 +4,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 /**
  * Created by akshay on 10/28/16.
  */
@@ -35,7 +37,7 @@ public class Tweet {
         Tweet tweet = new Tweet();
         try {
             tweet.body = jsonObject.getString("text");
-            tweet.uid = jsonObject.getString("uid");
+            tweet.uid = jsonObject.getString("id");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         } catch (JSONException e) {
@@ -45,7 +47,27 @@ public class Tweet {
         return tweet;
     }
 
+    public static ArrayList<Tweet> fromJSONArray(JSONArray jsonArray) {
+        ArrayList<Tweet> tweets = new ArrayList<>();
 
+        for(int i = 0; i < jsonArray.length(); ++i) {
+            Tweet t = null;
+
+            try {
+                t = fromJSON(jsonArray.getJSONObject(i));
+
+                if(t != null) {
+                    tweets.add(t);
+                }
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+                continue;
+            }
+        }
+
+        return tweets;
+    }
 }
 
 //[
