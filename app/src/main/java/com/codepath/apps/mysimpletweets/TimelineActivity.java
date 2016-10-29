@@ -3,13 +3,13 @@ package com.codepath.apps.mysimpletweets;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 
@@ -19,7 +19,7 @@ public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
     private TweetsArrayAdapter aTweets;
     private ArrayList<Tweet> tweets;
-    private ListView lvTweets;
+    private GridView gvTimeline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +28,11 @@ public class TimelineActivity extends AppCompatActivity {
         client = TwitterApplication.getRestClient(); // Gives us a singleton client
         populateTimeline();
 
-        lvTweets = (ListView) findViewById(R.id.lvTweets);
+        gvTimeline = (GridView) findViewById(R.id.gvTimeline);
         client = TwitterApplication.getRestClient();
         tweets = new ArrayList<>();
         aTweets = new TweetsArrayAdapter(this, tweets);
-        lvTweets.setAdapter(aTweets);
+        gvTimeline.setAdapter(aTweets);
         populateTimeline();
     }
 
