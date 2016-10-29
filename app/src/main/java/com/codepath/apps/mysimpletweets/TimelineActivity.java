@@ -2,6 +2,9 @@ package com.codepath.apps.mysimpletweets;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.widget.GridView;
 import android.widget.ListView;
@@ -17,27 +20,19 @@ import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
     private TwitterClient client;
-    private TweetsArrayAdapter aTweets;
     private ArrayList<Tweet> tweets;
-    private GridView gvTimeline;
+    private TweetsArrayAdapter tweetsArrayAdapter;
+    private RecyclerView rvTimeline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        client = TwitterApplication.getRestClient(); // Gives us a singleton client
-        populateTimeline();
+        initialize();
 
-        gvTimeline = (GridView) findViewById(R.id.gvTimeline);
-        client = TwitterApplication.getRestClient();
-        tweets = new ArrayList<>();
-        aTweets = new TweetsArrayAdapter(this, tweets);
-        gvTimeline.setAdapter(aTweets);
         populateTimeline();
     }
 
-    // Send API request
-    // Fill Listview
     private void populateTimeline() {
         client.getHomeTimeline(new JsonHttpResponseHandler() {
             @Override
@@ -45,10 +40,8 @@ public class TimelineActivity extends AppCompatActivity {
                                   Header[] headers,
                                   JSONArray jsonArray) {
 
-                Log.d("DEBUG", jsonArray.toString());
-
-                aTweets.addAll(Tweet.fromJSONArray(jsonArray));
-                aTweets.notifyDataSetChanged();
+                tweets.addAll(Tweet.fromJSONArray(jsonArray));
+                tweetsArrayAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -59,5 +52,19 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("DEBUG", responseString.toString());
             }
         });
+    }
+
+    private void initialize() {
+        client = TwitterApplication.getRestClient();
+
+        tweets = new ArrayList<>();
+        tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
+        rvTimeline = (RecyclerView) findViewById(R.id.rvTimeline);
+        rvTimeline.setAdapter(tweetsArrayAdapter);
+
+        StaggeredGridLayoutManager gridLayoutManager =
+                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
+        rvTimeline.setLayoutManager(gridLayoutManager);
     }
 }

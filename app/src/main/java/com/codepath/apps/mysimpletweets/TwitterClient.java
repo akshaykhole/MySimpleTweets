@@ -1,11 +1,8 @@
 package com.codepath.apps.mysimpletweets;
 
 import org.scribe.builder.api.Api;
-import org.scribe.builder.api.FlickrApi;
 import org.scribe.builder.api.TwitterApi;
-
 import android.content.Context;
-
 import com.codepath.oauth.OAuthBaseClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -20,8 +17,6 @@ import com.loopj.android.http.RequestParams;
 //		Request token URL	https://api.twitter.com/oauth/request_token
 //		Authorize URL	https://api.twitter.com/oauth/authorize
 //		Access token URL	https://api.twitter.com/oauth/access_token
-
-
 
 //Consumer Key (API Key)	CqRB8kgsuUntsdnGR57oSRGzV
 //        Consumer Secret (API Secret)	9m0F3KhOA1XzhFnVAQzoQIyYomm8SWc8HOyi13Q6FbpL5aLQqx
@@ -41,6 +36,7 @@ import com.loopj.android.http.RequestParams;
  * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
  * 
  */
+
 public class TwitterClient extends OAuthBaseClient {
 	public static final Class<? extends Api> REST_API_CLASS = TwitterApi.class; // Change this
 	public static final String REST_URL = "https://api.twitter.com/1.1/"; // Change this, base API URL
@@ -52,17 +48,6 @@ public class TwitterClient extends OAuthBaseClient {
 		super(context, REST_API_CLASS, REST_URL, REST_CONSUMER_KEY, REST_CONSUMER_SECRET, REST_CALLBACK_URL);
 	}
 
-	// CHANGE THIS
-	// DEFINE METHODS for different API endpoints here
-//	public void getInterestingnessList(AsyncHttpResponseHandler handler) {
-//		String apiUrl = getApiUrl("?nojsoncallback=1&method=flickr.interestingness.getList");
-//		// Can specify query string params directly or through RequestParams.
-//		RequestParams params = new RequestParams();
-//		params.put("format", "json");
-//		client.get(apiUrl, params, handler);
-//	}
-
-    // METHODS => ENDPOINTS
     public void getHomeTimeline(AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         RequestParams params = new RequestParams();
