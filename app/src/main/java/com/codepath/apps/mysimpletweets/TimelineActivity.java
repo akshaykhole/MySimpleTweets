@@ -23,6 +23,7 @@ public class TimelineActivity extends AppCompatActivity {
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter tweetsArrayAdapter;
     private RecyclerView rvTimeline;
+    private static final int gridNumOfColumns = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +56,14 @@ public class TimelineActivity extends AppCompatActivity {
 
     private void initialize() {
         client = TwitterApplication.getRestClient();
-
         tweets = new ArrayList<>();
         tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
         rvTimeline = (RecyclerView) findViewById(R.id.rvTimeline);
         rvTimeline.setAdapter(tweetsArrayAdapter);
 
         StaggeredGridLayoutManager gridLayoutManager =
-                new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+                new StaggeredGridLayoutManager(gridNumOfColumns,
+                        StaggeredGridLayoutManager.VERTICAL);
 
         rvTimeline.setLayoutManager(gridLayoutManager);
     }
