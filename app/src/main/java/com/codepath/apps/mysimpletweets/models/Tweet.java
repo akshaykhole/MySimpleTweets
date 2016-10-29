@@ -1,5 +1,7 @@
 package com.codepath.apps.mysimpletweets.models;
 
+import android.util.Log;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +13,9 @@ import java.util.ArrayList;
  */
 
 public class Tweet {
+    public static long minTweetId = Long.MAX_VALUE; // crashes the twitter API lol
+    public static long maxTweetId = 1;
+
     private String body;
     private String uid;
     private String createdAt;
@@ -40,6 +45,15 @@ public class Tweet {
             tweet.uid = jsonObject.getString("id");
             tweet.createdAt = jsonObject.getString("created_at");
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
+
+            Long tweetId = jsonObject.getLong("id");
+
+            if(minTweetId > tweetId) {
+                minTweetId = tweetId;
+            } else if (maxTweetId < tweetId) {
+                maxTweetId = tweetId;
+            }
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
