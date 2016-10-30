@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.squareup.picasso.Picasso;
 
@@ -81,7 +82,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         // Populate Profile Image
         ImageView ivProfileImage = holder.ivProfileImage;
         ivProfileImage.setImageResource(android.R.color.transparent);
-        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        Glide.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
     }
 
     @Override
@@ -93,31 +94,3 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         return context;
     }
 }
-
-
-//    public TweetsArrayAdapter(Context context, List<Tweet> tweets) {
-//        super(context, android.R.layout.simple_list_item_1, tweets);
-//    }
-//
-//    @NonNull
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        Tweet t = getItem(position);
-//
-//        if(convertView == null) {
-//            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_tweet, parent, false);
-//
-//        }
-//
-//        ImageView ivProfileImage = (ImageView) convertView.findViewById(R.id.ivProfileImage);
-//        TextView tvUserName = (TextView) convertView.findViewById(R.id.tvUserName);
-//        TextView tvBody = (TextView) convertView.findViewById(R.id.tvBody);
-//
-//        tvBody.setText(t.getBody());
-//        tvUserName.setText(t.getUser().getName());
-//        ivProfileImage.setImageResource(android.R.color.transparent); // Clear out old image for a recycled view
-//
-//        Picasso.with(getContext()).load(t.getUser().getProfileImageUrl()).into(ivProfileImage);
-//
-//        return convertView;
-//    }
