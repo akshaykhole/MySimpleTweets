@@ -9,6 +9,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 import cz.msebera.android.httpclient.Header;
 
-public class TimelineActivity extends AppCompatActivity {
+public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.ComposeTweetDialogListener {
     private TwitterClient client;
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter tweetsArrayAdapter;
@@ -32,6 +33,7 @@ public class TimelineActivity extends AppCompatActivity {
     StaggeredGridLayoutManager staggeredGridLayoutManager;
     private static final int gridNumOfColumns = 2;
     private boolean fetchNewAfterInitialLoad = false;
+    private ComposeTweetDialogFragment composeTweetDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +128,20 @@ public class TimelineActivity extends AppCompatActivity {
 
     public void composeNewTweet(MenuItem menuItem) {
         FragmentManager fm = getSupportFragmentManager();
-        ComposeTweetDialogFragment frag = new ComposeTweetDialogFragment();
-        frag.show(fm, "NEW_TWEET_FRAGMENT");
+        composeTweetDialogFragment = new ComposeTweetDialogFragment();
+        composeTweetDialogFragment.show(fm, "NEW_TWEET_FRAGMENT");
+    }
+
+    @Override
+    public void onFinishComposeTweet(String composedTweet) {
+        Log.d("DEBUG", composedTweet);
+    }
+
+    public void sendTweet(View v) {
+        composeTweetDialogFragment.dismiss();
+    }
+
+    public void closeComposeTweetFragment(View v) {
+        composeTweetDialogFragment.dismiss();
     }
 }

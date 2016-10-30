@@ -11,12 +11,12 @@
         android:orientation="vertical"
         android:id="@+id/llTopBar">
 
-
-        <ImageView
+        <Button
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:id="@+id/imageView"
-            app:srcCompat="@drawable/ic_clear_black_24dp" />
+            android:onClick="closeComposeTweetFragment"
+            android:background="@drawable/ic_clear_black_24dp" />
     </LinearLayout>
 
     <EditText
@@ -43,15 +43,14 @@
             android:id="@+id/tvNumOfCharsRemaining"
             android:layout_alignParentLeft="true"
             android:gravity="center"
-            android:paddingLeft="15dp"
             android:text="140" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:id="@+id/btnSendTweet"
+            android:onClick="sendTweet"
             android:layout_alignParentRight="true"
-            android:paddingRight="15dp"
             android:text="Send"/>
     </RelativeLayout>
 </RelativeLayout>
