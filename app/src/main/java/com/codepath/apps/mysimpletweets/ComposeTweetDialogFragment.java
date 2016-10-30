@@ -1,9 +1,13 @@
 package com.codepath.apps.mysimpletweets;
 
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -16,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by akshay on 10/29/16.
  */
@@ -24,6 +30,26 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
     public ComposeTweetDialogFragment() {}
 
     private EditText etComposeTweet;
+    private TextView tvTweetCharCount;
+    private final TextWatcher tweetCharCountWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            tvTweetCharCount.setText(String.valueOf(140 - s.length()));
+
+            if(s.toString().length() > 140) {
+                tvTweetCharCount.setTextColor(ContextCompat.getColor(getContext(), R.color.red));
+            }
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    };
 
     public interface ComposeTweetDialogListener {
         void onFinishComposeTweet(String composedTweet);
@@ -38,8 +64,10 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        tvTweetCharCount = (TextView) view.findViewById(R.id.tvNumOfCharsRemaining);
         etComposeTweet = (EditText) view.findViewById(R.id.etTweetBody);
         etComposeTweet.setOnEditorActionListener(this);
+        etComposeTweet.addTextChangedListener(tweetCharCountWatcher);
 
         getDialog().setTitle("Compose New Tweet");
 
