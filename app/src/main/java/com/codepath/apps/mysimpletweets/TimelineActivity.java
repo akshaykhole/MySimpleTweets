@@ -1,5 +1,6 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -43,7 +44,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         initialize();
-        populateTimeline();
+        // populateTimeline();
+        setupImplicitIntentReceiver();
     }
 
     @Override
@@ -100,14 +102,14 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                         Log.d("DEBUG", errorResponse.toString());
                         showToast("Oops! Something went wrong..Please try again after some time");
 
-                        // Do this in a background thread
-//                        try {
-//                            TimeUnit.SECONDS.sleep(10);
-//                            showToast("Please wait while we attempt to load more tweets");
-//                            populateTimeline();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
+                        // TODO: Do this in a background thread
+                        try {
+                            TimeUnit.SECONDS.sleep(10);
+                            showToast("Please wait while we attempt to load more tweets");
+                            populateTimeline();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
     }
@@ -194,5 +196,34 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     public void closeComposeTweetFragment(View v) {
         composeTweetDialogFragment.dismiss();
+    }
+
+    public void setupImplicitIntentReceiver() {
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+
+
+        if (null != type && Intent.ACTION_SEND.equals(action)) {
+            if("text/plain".equals(type)) {
+                String title = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+                String url = intent.getStringExtra(Intent.EXTRA_TEXT);
+
+                FragmentManager fm = getSupportFragmentManager();
+                composeTweetDialogFragment = new ComposeTweetDialogFragment();
+
+
+                Bundle dataForTweet = new Bundle();
+                dataForTweet.putString("title", title);
+                dataForTweet.putString("url", url);
+
+                composeTweetDialogFragment.setArguments(dataForTweet);
+                composeTweetDialogFragment.show(fm, "NEW_TWEET_FRAGMENT");
+
+                Log.d("DEBUG", title);
+                Log.d("DEBUG", url);
+            }
+        }
     }
 }

@@ -1,7 +1,5 @@
 package com.codepath.apps.mysimpletweets;
 
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -16,11 +14,7 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by akshay on 10/29/16.
@@ -31,6 +25,7 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
 
     private EditText etComposeTweet;
     private TextView tvTweetCharCount;
+    private EditText etTweetBody;
     private final TextWatcher tweetCharCountWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -69,13 +64,29 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
         etComposeTweet.setOnEditorActionListener(this);
         etComposeTweet.addTextChangedListener(tweetCharCountWatcher);
 
-        getDialog().setTitle("Compose New Tweet");
+        etTweetBody = (EditText) view.findViewById(R.id.etTweetBody);
+
+        // Get stuff from externally shared data
+        String tweetBodyFromShared = "";
+
+        if(getArguments().getString("url") != null) {
+            tweetBodyFromShared += getArguments().getString("url");
+        }
+
+        if(getArguments().getString("title") != null) {
+            tweetBodyFromShared += getArguments().getString("title");
+        }
+
+        if(!tweetBodyFromShared.isEmpty()) {
+            Log.d("DEBUG", "body1 " + tweetBodyFromShared);
+            etTweetBody.setText(tweetBodyFromShared);
+        }
+
+        Log.d("DEBUG", "body2 " + tweetBodyFromShared);
 
         etComposeTweet.requestFocus();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
-
-
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
