@@ -45,5 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tvCreatedAt"
         android:layout_alignLeft="@+id/llUsernameInfo"
-        android:id="@+id/tvBody" />
+        android:id="@+id/tvBody"
+        android:autoLink="all"
+        android:linksClickable="true"/>
 </RelativeLayout>
