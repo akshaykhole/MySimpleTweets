@@ -29,20 +29,21 @@
             android:layout_toRightOf="@+id/ivProfileImage"
             android:layout_toEndOf="@+id/ivProfileImage"
             android:id="@+id/tvUserName" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="now"
-            android:id="@+id/tvCreatedAt"
-            android:paddingLeft="10dp"/>
     </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="now"
+        android:id="@+id/tvCreatedAt"
+        android:layout_toRightOf="@+id/ivProfileImage"
+        android:layout_below="@+id/llUsernameInfo"/>
 
     <TextView
         android:text="Second, let's take a look at how to build a dialog simply by customizing the available Dialog objects that we can construct. For more details about the different types of dialogs, check out the  section below."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/llUsernameInfo"
+        android:layout_below="@+id/tvCreatedAt"
         android:layout_alignLeft="@+id/llUsernameInfo"
         android:id="@+id/tvBody" />
 </RelativeLayout>

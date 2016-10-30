@@ -1,6 +1,8 @@
 package com.codepath.apps.mysimpletweets;
 
 import android.content.Context;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -69,11 +71,13 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
 
         // Populate username
         TextView tvUsername = holder.tvUsername;
-        tvUsername.setText("@" + tweet.getUser().getScreenName());
+        tvUsername.setText(tweet.getUser().getName() + " @" + tweet.getUser().getScreenName());
+        tvUsername.setTypeface(null, Typeface.BOLD);
 
         // Populate Created At
         TextView tvCreatedAt = holder.tvCreatedAt;
         tvCreatedAt.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
+        tvCreatedAt.setPaintFlags(tvCreatedAt.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 
         // Populate body
         TextView tvBody = holder.tvBody;
