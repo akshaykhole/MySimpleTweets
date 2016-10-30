@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -134,7 +135,22 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     @Override
     public void onFinishComposeTweet(String composedTweet) {
-        Log.d("DEBUG", composedTweet);
+        client.postTweet(composedTweet, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode,
+                                  Header[] headers,
+                                  JSONObject response) {
+                Log.d("DEBUG", response.toString());
+            }
+
+            @Override
+            public void onFailure(int statusCode,
+                                  Header[] headers,
+                                  Throwable throwable,
+                                  JSONObject errorResponse) {
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
     }
 
     public void sendTweet(View v) {
