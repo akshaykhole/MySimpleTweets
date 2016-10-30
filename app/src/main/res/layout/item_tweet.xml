@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:id="@+id/rlTweetItem"
     android:padding="5dp">
@@ -10,28 +9,40 @@
     <ImageView
         android:layout_width="50dp"
         android:layout_height="50dp"
-        app:srcCompat="@drawable/ic_launcher"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:id="@+id/ivProfileImage"
         android:paddingRight="5dp" />
 
-    <TextView
-        android:text="TextView"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/ivProfileImage"
-        android:layout_toEndOf="@+id/ivProfileImage"
-        android:id="@+id/tvUserName" />
+        android:layout_toRightOf="@id/ivProfileImage"
+        android:id="@+id/llUsernameInfo">
+
+        <TextView
+            android:text="akshaykhole"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_toRightOf="@+id/ivProfileImage"
+            android:layout_toEndOf="@+id/ivProfileImage"
+            android:id="@+id/tvUserName" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="now"
+            android:id="@+id/tvCreatedAt"
+            android:paddingLeft="10dp"/>
+    </LinearLayout>
 
     <TextView
-        android:text="TextView"
+        android:text="Second, let's take a look at how to build a dialog simply by customizing the available Dialog objects that we can construct. For more details about the different types of dialogs, check out the  section below."
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvUserName"
-        android:layout_alignLeft="@+id/tvUserName"
-        android:layout_alignStart="@+id/tvUserName"
+        android:layout_below="@+id/llUsernameInfo"
+        android:layout_alignLeft="@+id/llUsernameInfo"
         android:id="@+id/tvBody" />
 </RelativeLayout>

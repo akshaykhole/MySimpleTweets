@@ -1,11 +1,14 @@
 package com.codepath.apps.mysimpletweets;
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -35,7 +38,13 @@ public class TimelineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         initialize();
-        populateTimeline();
+        // populateTimeline();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.timeline_menu, menu);
+        return true;
     }
 
     private void populateTimeline() {
@@ -46,7 +55,7 @@ public class TimelineActivity extends AppCompatActivity {
                                           Header[] headers,
                                           JSONArray jsonArray) {
 
-                        Log.d("RESPONSE", jsonArray.toString());
+                        // Log.d("RESPONSE", jsonArray.toString());
                         tweets.addAll(Tweet.fromJSONArray(jsonArray));
                         Log.d("DEBUG", tweets.size() + "size");
                         tweetsArrayAdapter.notifyDataSetChanged();
@@ -104,7 +113,7 @@ public class TimelineActivity extends AppCompatActivity {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 Log.d("DEBUG", "LOADING MORE TWEETS!");
-                populateTimeline();
+                // populateTimeline();
             }
         });
     }
@@ -113,5 +122,11 @@ public class TimelineActivity extends AppCompatActivity {
         Toast.makeText(TimelineActivity.this,
                 message,
                 Toast.LENGTH_SHORT).show();
+    }
+
+    public void composeNewTweet(MenuItem menuItem) {
+        FragmentManager fm = getSupportFragmentManager();
+        ComposeTweetDialogFragment frag = new ComposeTweetDialogFragment();
+        frag.show(fm, "NEW_TWEET_FRAGMENT");
     }
 }

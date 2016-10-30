@@ -28,9 +28,9 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-        Toast.makeText(this, "Connection to twitter: SUCCESS", Toast.LENGTH_SHORT).show();
-		 Intent i = new Intent(this, TimelineActivity.class);
-		 startActivity(i);
+		// Toast.makeText(this, "Connection to twitter: SUCCESS", Toast.LENGTH_SHORT).show();
+		Intent i = new Intent(this, TimelineActivity.class);
+		startActivity(i);
 	}
 
 	// OAuth authentication flow failed, handle the error

@@ -18,6 +18,8 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.codepath.apps.mysimpletweets.ParseRelativeDate.getRelativeTimeAgo;
+
 /**
  * Created by akshay on 10/28/16.
  */
@@ -36,6 +38,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
+        public TextView tvCreatedAt;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -43,6 +46,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
+            tvCreatedAt = (TextView) itemView.findViewById(R.id.tvCreatedAt);
         }
     }
 
@@ -64,7 +68,11 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
 
         // Populate username
         TextView tvUsername = holder.tvUsername;
-        tvUsername.setText(tweet.getUser().getScreenName());
+        tvUsername.setText("@" + tweet.getUser().getScreenName());
+
+        // Populate Created At
+        TextView tvCreatedAt = holder.tvCreatedAt;
+        tvCreatedAt.setText(getRelativeTimeAgo(tweet.getCreatedAt()));
 
         // Populate body
         TextView tvBody = holder.tvBody;
@@ -72,6 +80,7 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
 
         // Populate Profile Image
         ImageView ivProfileImage = holder.ivProfileImage;
+        ivProfileImage.setImageResource(android.R.color.transparent);
         Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
     }
 
