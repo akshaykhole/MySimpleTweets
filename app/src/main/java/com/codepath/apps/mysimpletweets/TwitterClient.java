@@ -58,23 +58,26 @@ public class TwitterClient extends OAuthBaseClient {
         String apiUrl = getApiUrl("statuses/home_timeline.json");
         RequestParams params = new RequestParams();
         params.put("count", numOfTweetsToFetchOnEveryReqeust);
+        Log.d("DEBUG", fetchNewAfterInitialLoad + "");
 
         if (fetchNewAfterInitialLoad) {
+
             params.put("since_id", Tweet.maxTweetId);
+
         } else {
             params.put("since_id", "1");
+
+            // Sending Long.MAX_VALUE crashes the twitter API
+            String maxTweetId;
+
+            if (Tweet.minTweetId == Long.MAX_VALUE) {
+                maxTweetId = "9223372036854775000";
+            } else {
+                maxTweetId = Tweet.minTweetId + "";
+            }
+            params.put("max_id", maxTweetId);
         }
 
-        // Sending Long.MAX_VALUE crashes the twitter API
-        String maxTweetId;
-
-        if (Tweet.minTweetId == Long.MAX_VALUE) {
-            maxTweetId = "9223372036854775000";
-        } else {
-            maxTweetId = Tweet.minTweetId + "";
-        }
-
-        params.put("max_id", maxTweetId);
         getClient().get(apiUrl, params, handler);
     }
 
@@ -83,5 +86,9 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("status", tweetBody);
         getClient().post(apiUrl, params, handler);
+    }
+
+    public void getSelfProfile(AsyncHttpResponseHandler handler) {
+
     }
 }
