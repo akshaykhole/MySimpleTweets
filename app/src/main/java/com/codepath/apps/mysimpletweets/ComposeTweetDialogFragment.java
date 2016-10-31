@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
     private EditText etComposeTweet;
     private TextView tvTweetCharCount;
     private EditText etTweetBody;
+    private Button sendTweet;
     private final TextWatcher tweetCharCountWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -69,11 +71,11 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
         // Get stuff from externally shared data
         String tweetBodyFromShared = "";
 
-        if(getArguments().getString("url") != null) {
+        if(getArguments() != null && getArguments().getString("url") != null) {
             tweetBodyFromShared += getArguments().getString("url");
         }
 
-        if(getArguments().getString("title") != null) {
+        if(getArguments() != null && getArguments().getString("title") != null) {
             tweetBodyFromShared += getArguments().getString("title");
         }
 
@@ -86,6 +88,17 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
 
         etComposeTweet.requestFocus();
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+
+        sendTweet = (Button) view.findViewById(R.id.btnSendTweet);
+
+        sendTweet.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getActivity();
+                listener.onFinishComposeTweet(etComposeTweet.getText().toString());
+                dismiss();
+            }
+        });
     }
 
     @Override
@@ -100,4 +113,6 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
         }
         return false;
     }
+
+
 }

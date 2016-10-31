@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -44,7 +45,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
         initialize();
-        // populateTimeline();
+        populateTimeline();
         setupImplicitIntentReceiver();
     }
 
@@ -103,13 +104,13 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                         showToast("Oops! Something went wrong..Please try again after some time");
 
                         // TODO: Do this in a background thread
-                        try {
-                            TimeUnit.SECONDS.sleep(10);
-                            showToast("Please wait while we attempt to load more tweets");
-                            populateTimeline();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
+//                        try {
+//                            TimeUnit.SECONDS.sleep(10);
+//                            showToast("Please wait while we attempt to load more tweets");
+//                            // populateTimeline();
+//                        } catch (InterruptedException e) {
+//                            e.printStackTrace();
+//                        }
                     }
                 });
     }
@@ -191,7 +192,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     }
 
     public void sendTweet(View v) {
-        composeTweetDialogFragment.dismiss();
     }
 
     public void closeComposeTweetFragment(View v) {
@@ -202,8 +202,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         Intent intent = getIntent();
         String action = intent.getAction();
         String type = intent.getType();
-
-
 
         if (null != type && Intent.ACTION_SEND.equals(action)) {
             if("text/plain".equals(type)) {
