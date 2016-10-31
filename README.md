@@ -49,7 +49,8 @@ The following **bonus** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+![alt tag](https://github.com/akshaykhole/MySimpleTweets/blob/master/twitter1.1.gif)
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/) and [Android Tool](https://github.com/mortenjust/androidtool-mac).
 
