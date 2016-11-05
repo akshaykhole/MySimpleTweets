@@ -29,9 +29,9 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         // Set viewpager adapter for the pager
         viewPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager()));
-        // Find the pager sliding tabstrip
+        // Find the pager sliding tab strip
         PagerSlidingTabStrip tabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
-        // Attach the pager tabstrip to viewpager
+        // Attach the pager tab strip to viewpager
         tabStrip.setViewPager(viewPager);
     }
 
@@ -45,6 +45,10 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         FragmentManager fm = getSupportFragmentManager();
         composeTweetDialogFragment = new ComposeTweetDialogFragment();
         composeTweetDialogFragment.show(fm, "NEW_TWEET_FRAGMENT");
+    }
+
+    public void onProfileView(MenuItem item) {
+
     }
 
     @Override
@@ -101,7 +105,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         }
     }
 
-    // Return order of fragments in ViewPager
+    // Adapter for Fragment Pager
     public class TweetsPagerAdapter extends FragmentPagerAdapter {
         private String tabTitles[] = { "Home", "Mentions" };
 
