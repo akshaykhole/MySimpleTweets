@@ -35,7 +35,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     private TweetsArrayAdapter tweetsArrayAdapter;
     private RecyclerView rvTimeline;
     StaggeredGridLayoutManager staggeredGridLayoutManager;
-    private static final int gridNumOfColumns = 2;
+    private static final int gridNumOfColumns = 1;
     private boolean fetchNewAfterInitialLoad = false;
     private ComposeTweetDialogFragment composeTweetDialogFragment;
     private SwipeRefreshLayout swipeContainer;
@@ -119,6 +119,8 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         client = TwitterApplication.getRestClient();
         tweets = new ArrayList<>();
         tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
+
+        // Initialize Recycler view container Tweets
         rvTimeline = (RecyclerView) findViewById(R.id.rvTimeline);
         rvTimeline.setAdapter(tweetsArrayAdapter);
 
@@ -128,7 +130,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
         rvTimeline.setLayoutManager(staggeredGridLayoutManager);
         setRvScrollListener();
-
+        // Done init-ing Recycler view
 
         swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
         // Configure the refreshing colors
@@ -175,7 +177,7 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
             public void onSuccess(int statusCode,
                                   Header[] headers,
                                   JSONObject response) {
-                Tweet t = Tweet.fromJSON(response);;
+                Tweet t = Tweet.fromJSON(response);
                 tweets.add(0, t);
                 tweetsArrayAdapter.notifyItemInserted(0);
                 rvTimeline.scrollToPosition(0);
