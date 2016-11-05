@@ -9,10 +9,12 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.codepath.apps.mysimpletweets.ComposeTweetDialogFragment;
 import com.codepath.apps.mysimpletweets.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.R;
+import com.codepath.apps.mysimpletweets.TimelineActivity;
 import com.codepath.apps.mysimpletweets.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 
@@ -89,7 +91,6 @@ public class TweetsListFragment extends Fragment {
             }
         });
     }
-
 
     // API METHODS BELOW
     public void addAll(ArrayList<Tweet> tweetArrayList) {

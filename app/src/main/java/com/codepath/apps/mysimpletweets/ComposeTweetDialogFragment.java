@@ -28,6 +28,7 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
     private TextView tvTweetCharCount;
     private EditText etTweetBody;
     private Button sendTweet;
+
     private final TextWatcher tweetCharCountWatcher = new TextWatcher() {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {

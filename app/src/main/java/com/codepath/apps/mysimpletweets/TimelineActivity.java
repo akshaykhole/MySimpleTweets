@@ -31,23 +31,12 @@ import java.util.concurrent.TimeUnit;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.ComposeTweetDialogListener {
-    private TwitterClient client;
-//    private ArrayList<Tweet> tweets;
-//    private TweetsArrayAdapter tweetsArrayAdapter;
-//    private RecyclerView rvTimeline;
-//    StaggeredGridLayoutManager staggeredGridLayoutManager;
-//    private static final int gridNumOfColumns = 1;
-    private boolean fetchNewAfterInitialLoad = false;
     private ComposeTweetDialogFragment composeTweetDialogFragment;
-    TweetsListFragment tweetsListFragment;
-//    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        initialize(savedInstanceState);
-        populateTimeline();
         setupImplicitIntentReceiver();
     }
 
@@ -55,127 +44,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.timeline_menu, menu);
         return true;
-    }
-
-    private void populateTimeline() {
-        client.getHomeTimeline(fetchNewAfterInitialLoad,
-                new JsonHttpResponseHandler() {
-                    @Override
-                    public void onSuccess(int statusCode,
-                                          Header[] headers,
-                                          JSONArray jsonArray) {
-
-                        ArrayList<Tweet> tweetArrayFromJson = Tweet.fromJSONArray(jsonArray);
-
-                        if(!fetchNewAfterInitialLoad) {
-                            // Add to fragment here
-                            tweetsListFragment.addAll(tweetArrayFromJson);
-                        } else {
-
-                            Log.d("DEBUG", "INSERTING NEW STUFF TO TIMELINE" + tweetArrayFromJson.size());
-
-//                            for(int x = tweetArrayFromJson.size() - 1; x >= 0; --x) {
-//                                Log.d("DEBUG", "PREPENDING" + tweetArrayFromJson.get(x).getUser().getScreenName() + tweetArrayFromJson.get(x).getBody());
-//                                tweets.add(0, tweetArrayFromJson.get(x));
-//                                tweetsArrayAdapter.notifyItemInserted(0);
-//                                rvTimeline.scrollToPosition(0);
-//                            }
-
-                            fetchNewAfterInitialLoad = false;
-                            // swipeContainer.setRefreshing(false);
-                        }
-                        // Log.d("DEBUG", tweets.size() + "size");
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode,
-                                          Header[] headers,
-                                          String responseString,
-                                          Throwable throwable) {
-
-                        Log.d("DEBUG", responseString.toString());
-                    }
-
-                    @Override
-                    public void onFailure(int statusCode,
-                                          Header[] headers,
-                                          Throwable throwable,
-                                          JSONObject errorResponse) {
-
-                        Log.d("DEBUG", errorResponse.toString());
-                        showToast("Oops! Something went wrong..Please try again after some time");
-
-                        // TODO: Do this in a background thread
-//                        try {
-//                            TimeUnit.SECONDS.sleep(10);
-//                            showToast("Please wait while we attempt to load more tweets");
-//                            // populateTimeline();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
-                    }
-                });
-    }
-
-    private void initialize(Bundle savedInstanceState) {
-        client = TwitterApplication.getRestClient();
-
-        if (savedInstanceState == null) {
-            tweetsListFragment = (TweetsListFragment) getSupportFragmentManager().findFragmentById(
-                    R.id.tweetListFragment
-            );
-        }
-
-
-
-
-
-
-//        tweets = new ArrayList<>();
-//        tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
-//
-//        // Initialize Recycler view container Tweets
-//        rvTimeline = (RecyclerView) findViewById(R.id.rvTimeline);
-//        rvTimeline.setAdapter(tweetsArrayAdapter);
-//
-//        staggeredGridLayoutManager =
-//                new StaggeredGridLayoutManager(gridNumOfColumns,
-//                        StaggeredGridLayoutManager.VERTICAL);
-//
-//        rvTimeline.setLayoutManager(staggeredGridLayoutManager);
-//        setRvScrollListener();
-//        // Done init-ing Recycler view
-//
-//        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-//        // Configure the refreshing colors
-//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-//                android.R.color.holo_green_light,
-//                android.R.color.holo_orange_light,
-//                android.R.color.holo_red_light);
-//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-//            @Override
-//            public void onRefresh() {
-//                fetchNewAfterInitialLoad = true;
-//                populateTimeline();
-//            }
-//        });
-    }
-
-//    public void setRvScrollListener() {
-//        rvTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(
-//                staggeredGridLayoutManager) {
-//
-//            @Override
-//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-//                populateTimeline();
-//            }
-//        });
-//    }
-
-    private void showToast(String message) {
-        Toast.makeText(TimelineActivity.this,
-                message,
-                Toast.LENGTH_SHORT).show();
     }
 
     public void composeNewTweet(MenuItem menuItem) {
@@ -186,28 +54,25 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
 
     @Override
     public void onFinishComposeTweet(String composedTweet) {
-        client.postTweet(composedTweet, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode,
-                                  Header[] headers,
-                                  JSONObject response) {
-//                Tweet t = Tweet.fromJSON(response);
-//                tweets.add(0, t);
-//                tweetsArrayAdapter.notifyItemInserted(0);
-//                rvTimeline.scrollToPosition(0);
-            }
-
-            @Override
-            public void onFailure(int statusCode,
-                                  Header[] headers,
-                                  Throwable throwable,
-                                  JSONObject errorResponse) {
-                Log.d("DEBUG", errorResponse.toString());
-            }
-        });
-    }
-
-    public void sendTweet(View v) {
+//        client.postTweet(composedTweet, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode,
+//                                  Header[] headers,
+//                                  JSONObject response) {
+////                Tweet t = Tweet.fromJSON(response);
+////                tweets.add(0, t);
+////                tweetsArrayAdapter.notifyItemInserted(0);
+////                rvTimeline.scrollToPosition(0);
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode,
+//                                  Header[] headers,
+//                                  Throwable throwable,
+//                                  JSONObject errorResponse) {
+//                Log.d("DEBUG", errorResponse.toString());
+//            }
+//        });
     }
 
     public void closeComposeTweetFragment(View v) {
