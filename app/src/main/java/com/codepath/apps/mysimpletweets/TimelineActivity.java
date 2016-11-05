@@ -52,6 +52,13 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         startActivity(i);
     }
 
+    public void onProfileView(View v) {
+        String screenName = (String) v.getTag();
+        Intent i = new Intent(this, ProfileActivity.class);
+        i.putExtra("screen_name", screenName);
+        startActivity(i);
+    }
+
     @Override
     public void onFinishComposeTweet(String composedTweet) {
 //        client.postTweet(composedTweet, new JsonHttpResponseHandler() {

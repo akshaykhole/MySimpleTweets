@@ -9,20 +9,14 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.codepath.apps.mysimpletweets.ComposeTweetDialogFragment;
 import com.codepath.apps.mysimpletweets.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.R;
-import com.codepath.apps.mysimpletweets.TimelineActivity;
 import com.codepath.apps.mysimpletweets.TweetsArrayAdapter;
 import com.codepath.apps.mysimpletweets.models.Tweet;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class TweetsListFragment extends Fragment {
-
     private ArrayList<Tweet> tweets;
     private TweetsArrayAdapter tweetsArrayAdapter;
     private RecyclerView rvTimeline;
@@ -31,8 +25,6 @@ public class TweetsListFragment extends Fragment {
     private boolean fetchNewAfterInitialLoad = false;
     private ComposeTweetDialogFragment composeTweetDialogFragment;
     private SwipeRefreshLayout swipeContainer;
-
-
 
     @Override
     public View onCreateView(LayoutInflater inflater,
