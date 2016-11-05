@@ -17,6 +17,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
 import com.codepath.apps.mysimpletweets.models.Tweet;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -31,20 +32,21 @@ import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.ComposeTweetDialogListener {
     private TwitterClient client;
-    private ArrayList<Tweet> tweets;
-    private TweetsArrayAdapter tweetsArrayAdapter;
-    private RecyclerView rvTimeline;
-    StaggeredGridLayoutManager staggeredGridLayoutManager;
-    private static final int gridNumOfColumns = 1;
+//    private ArrayList<Tweet> tweets;
+//    private TweetsArrayAdapter tweetsArrayAdapter;
+//    private RecyclerView rvTimeline;
+//    StaggeredGridLayoutManager staggeredGridLayoutManager;
+//    private static final int gridNumOfColumns = 1;
     private boolean fetchNewAfterInitialLoad = false;
     private ComposeTweetDialogFragment composeTweetDialogFragment;
-    private SwipeRefreshLayout swipeContainer;
+    TweetsListFragment tweetsListFragment;
+//    private SwipeRefreshLayout swipeContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        initialize();
+        initialize(savedInstanceState);
         populateTimeline();
         setupImplicitIntentReceiver();
     }
@@ -66,23 +68,23 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                         ArrayList<Tweet> tweetArrayFromJson = Tweet.fromJSONArray(jsonArray);
 
                         if(!fetchNewAfterInitialLoad) {
-                            tweets.addAll(tweetArrayFromJson);
-                            tweetsArrayAdapter.notifyDataSetChanged();
+                            // Add to fragment here
+                            tweetsListFragment.addAll(tweetArrayFromJson);
                         } else {
 
                             Log.d("DEBUG", "INSERTING NEW STUFF TO TIMELINE" + tweetArrayFromJson.size());
 
-                            for(int x = tweetArrayFromJson.size() - 1; x >= 0; --x) {
-                                Log.d("DEBUG", "PREPENDING" + tweetArrayFromJson.get(x).getUser().getScreenName() + tweetArrayFromJson.get(x).getBody());
-                                tweets.add(0, tweetArrayFromJson.get(x));
-                                tweetsArrayAdapter.notifyItemInserted(0);
-                                rvTimeline.scrollToPosition(0);
-                            }
+//                            for(int x = tweetArrayFromJson.size() - 1; x >= 0; --x) {
+//                                Log.d("DEBUG", "PREPENDING" + tweetArrayFromJson.get(x).getUser().getScreenName() + tweetArrayFromJson.get(x).getBody());
+//                                tweets.add(0, tweetArrayFromJson.get(x));
+//                                tweetsArrayAdapter.notifyItemInserted(0);
+//                                rvTimeline.scrollToPosition(0);
+//                            }
 
                             fetchNewAfterInitialLoad = false;
-                            swipeContainer.setRefreshing(false);
+                            // swipeContainer.setRefreshing(false);
                         }
-                        Log.d("DEBUG", tweets.size() + "size");
+                        // Log.d("DEBUG", tweets.size() + "size");
                     }
 
                     @Override
@@ -115,48 +117,60 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
                 });
     }
 
-    private void initialize() {
+    private void initialize(Bundle savedInstanceState) {
         client = TwitterApplication.getRestClient();
-        tweets = new ArrayList<>();
-        tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
 
-        // Initialize Recycler view container Tweets
-        rvTimeline = (RecyclerView) findViewById(R.id.rvTimeline);
-        rvTimeline.setAdapter(tweetsArrayAdapter);
+        if (savedInstanceState == null) {
+            tweetsListFragment = (TweetsListFragment) getSupportFragmentManager().findFragmentById(
+                    R.id.tweetListFragment
+            );
+        }
 
-        staggeredGridLayoutManager =
-                new StaggeredGridLayoutManager(gridNumOfColumns,
-                        StaggeredGridLayoutManager.VERTICAL);
 
-        rvTimeline.setLayoutManager(staggeredGridLayoutManager);
-        setRvScrollListener();
-        // Done init-ing Recycler view
 
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchNewAfterInitialLoad = true;
-                populateTimeline();
-            }
-        });
+
+
+
+//        tweets = new ArrayList<>();
+//        tweetsArrayAdapter = new TweetsArrayAdapter(this, tweets);
+//
+//        // Initialize Recycler view container Tweets
+//        rvTimeline = (RecyclerView) findViewById(R.id.rvTimeline);
+//        rvTimeline.setAdapter(tweetsArrayAdapter);
+//
+//        staggeredGridLayoutManager =
+//                new StaggeredGridLayoutManager(gridNumOfColumns,
+//                        StaggeredGridLayoutManager.VERTICAL);
+//
+//        rvTimeline.setLayoutManager(staggeredGridLayoutManager);
+//        setRvScrollListener();
+//        // Done init-ing Recycler view
+//
+//        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+//        // Configure the refreshing colors
+//        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
+//                android.R.color.holo_green_light,
+//                android.R.color.holo_orange_light,
+//                android.R.color.holo_red_light);
+//        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+//            @Override
+//            public void onRefresh() {
+//                fetchNewAfterInitialLoad = true;
+//                populateTimeline();
+//            }
+//        });
     }
 
-    public void setRvScrollListener() {
-        rvTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(
-                staggeredGridLayoutManager) {
-
-            @Override
-            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
-                populateTimeline();
-            }
-        });
-    }
+//    public void setRvScrollListener() {
+//        rvTimeline.addOnScrollListener(new EndlessRecyclerViewScrollListener(
+//                staggeredGridLayoutManager) {
+//
+//            @Override
+//            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+//                populateTimeline();
+//            }
+//        });
+//    }
 
     private void showToast(String message) {
         Toast.makeText(TimelineActivity.this,
@@ -177,10 +191,10 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
             public void onSuccess(int statusCode,
                                   Header[] headers,
                                   JSONObject response) {
-                Tweet t = Tweet.fromJSON(response);
-                tweets.add(0, t);
-                tweetsArrayAdapter.notifyItemInserted(0);
-                rvTimeline.scrollToPosition(0);
+//                Tweet t = Tweet.fromJSON(response);
+//                tweets.add(0, t);
+//                tweetsArrayAdapter.notifyItemInserted(0);
+//                rvTimeline.scrollToPosition(0);
             }
 
             @Override
