@@ -7,6 +7,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import com.codepath.apps.mysimpletweets.ComposeTweetDialogFragment;
@@ -24,7 +25,6 @@ public class TweetsListFragment extends Fragment {
     private static final int gridNumOfColumns = 1;
     private boolean fetchNewAfterInitialLoad = false;
     private ComposeTweetDialogFragment composeTweetDialogFragment;
-    private SwipeRefreshLayout swipeContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -57,20 +57,6 @@ public class TweetsListFragment extends Fragment {
         rvTimeline.setLayoutManager(staggeredGridLayoutManager);
         setRvScrollListener();
         // Done init-ing Recycler view
-
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
-        // Configure the refreshing colors
-        swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-        swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                fetchNewAfterInitialLoad = true;
-                // populateTimeline();
-            }
-        });
     }
 
     public void setRvScrollListener() {
