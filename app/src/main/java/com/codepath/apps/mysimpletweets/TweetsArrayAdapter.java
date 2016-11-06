@@ -86,7 +86,8 @@ public class TweetsArrayAdapter extends RecyclerView.Adapter<TweetsArrayAdapter.
         // Populate Profile Image
         ImageView ivProfileImage = holder.ivProfileImage;
         ivProfileImage.setImageResource(android.R.color.transparent);
-        Glide.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        Picasso.with(getContext()).load(tweet.getUser().getProfileImageUrl()).into(ivProfileImage);
+        ivProfileImage.setTag(tweet.getUser().getScreenName());
     }
 
     @Override

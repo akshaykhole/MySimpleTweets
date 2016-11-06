@@ -40,15 +40,16 @@
                     android:scheme="oauth" />
             </intent-filter>
         </activity>
-
         <activity android:name=".TimelineActivity">
             <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"></data>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
-
+        <activity android:name=".ProfileActivity"></activity>
     </application>
 
 </manifest>
