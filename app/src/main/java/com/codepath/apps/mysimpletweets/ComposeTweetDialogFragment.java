@@ -95,7 +95,7 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
         sendTweet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getActivity();
+                ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getTargetFragment();
                 listener.onFinishComposeTweet(etComposeTweet.getText().toString());
                 dismiss();
             }
@@ -107,7 +107,7 @@ public class ComposeTweetDialogFragment extends DialogFragment implements TextVi
         Log.d("DEBUG", etComposeTweet.getText().toString());
 
         if(EditorInfo.IME_ACTION_DONE == actionId) {
-            ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getActivity();
+            ComposeTweetDialogListener listener = (ComposeTweetDialogListener) getTargetFragment();
             listener.onFinishComposeTweet(etComposeTweet.getText().toString());
             dismiss();
             return true;

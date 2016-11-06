@@ -15,15 +15,15 @@ import android.view.View;
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepath.apps.mysimpletweets.fragments.HomeTimelineFragment;
 import com.codepath.apps.mysimpletweets.fragments.MentionsTimelineFragment;
+import com.codepath.apps.mysimpletweets.fragments.TweetsListFragment;
 
-public class TimelineActivity extends AppCompatActivity implements ComposeTweetDialogFragment.ComposeTweetDialogListener {
+public class TimelineActivity extends AppCompatActivity {
     private ComposeTweetDialogFragment composeTweetDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
-        setupImplicitIntentReceiver();
 
         // Get the viewpager
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
@@ -41,12 +41,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         return true;
     }
 
-    public void composeNewTweet(MenuItem menuItem) {
-        FragmentManager fm = getSupportFragmentManager();
-        composeTweetDialogFragment = new ComposeTweetDialogFragment();
-        composeTweetDialogFragment.show(fm, "NEW_TWEET_FRAGMENT");
-    }
-
     public void onProfileView(MenuItem item) {
         Intent i = new Intent(this, ProfileActivity.class);
         startActivity(i);
@@ -57,60 +51,6 @@ public class TimelineActivity extends AppCompatActivity implements ComposeTweetD
         Intent i = new Intent(this, ProfileActivity.class);
         i.putExtra("screen_name", screenName);
         startActivity(i);
-    }
-
-    @Override
-    public void onFinishComposeTweet(String composedTweet) {
-//        client.postTweet(composedTweet, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode,
-//                                  Header[] headers,
-//                                  JSONObject response) {
-////                Tweet t = Tweet.fromJSON(response);
-////                tweets.add(0, t);
-////                tweetsArrayAdapter.notifyItemInserted(0);
-////                rvTimeline.scrollToPosition(0);
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode,
-//                                  Header[] headers,
-//                                  Throwable throwable,
-//                                  JSONObject errorResponse) {
-//                Log.d("DEBUG", errorResponse.toString());
-//            }
-//        });
-    }
-
-    public void closeComposeTweetFragment(View v) {
-        composeTweetDialogFragment.dismiss();
-    }
-
-    public void setupImplicitIntentReceiver() {
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
-
-        if (null != type && Intent.ACTION_SEND.equals(action)) {
-            if("text/plain".equals(type)) {
-                String title = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-                String url = intent.getStringExtra(Intent.EXTRA_TEXT);
-
-                FragmentManager fm = getSupportFragmentManager();
-                composeTweetDialogFragment = new ComposeTweetDialogFragment();
-
-
-                Bundle dataForTweet = new Bundle();
-                dataForTweet.putString("title", title);
-                dataForTweet.putString("url", url);
-
-                composeTweetDialogFragment.setArguments(dataForTweet);
-                composeTweetDialogFragment.show(fm, "NEW_TWEET_FRAGMENT");
-
-                Log.d("DEBUG", title);
-                Log.d("DEBUG", url);
-            }
-        }
     }
 
     // Adapter for Fragment Pager

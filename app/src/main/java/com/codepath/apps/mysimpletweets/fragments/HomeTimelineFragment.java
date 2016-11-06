@@ -1,7 +1,14 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import com.codepath.apps.mysimpletweets.ComposeTweetDialogFragment;
+import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
@@ -14,11 +21,9 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-/**
- * Created by akshay on 11/5/16.
- */
+public class HomeTimelineFragment extends TweetsListFragment
+        implements ComposeTweetDialogFragment.ComposeTweetDialogListener {
 
-public class HomeTimelineFragment extends TweetsListFragment {
     private TwitterClient client;
     private boolean fetchNewAfterInitialLoad = false;
 
@@ -27,6 +32,23 @@ public class HomeTimelineFragment extends TweetsListFragment {
         super.onCreate(savedInstanceState);
         initialize();
         populateTimeline();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.home_timeline_menu, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_compose_tweet:
+                composeNewTweet();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void initialize() {
@@ -44,22 +66,11 @@ public class HomeTimelineFragment extends TweetsListFragment {
                         ArrayList<Tweet> tweetArrayFromJson = Tweet.fromJSONArray(jsonArray);
 
                         if(!fetchNewAfterInitialLoad) {
-                            // Add to fragment here
                             addAll(tweetArrayFromJson);
                         } else {
                             Log.d("DEBUG", "INSERTING NEW STUFF TO TIMELINE" + tweetArrayFromJson.size());
-
-//                            for(int x = tweetArrayFromJson.size() - 1; x >= 0; --x) {
-//                                Log.d("DEBUG", "PREPENDING" + tweetArrayFromJson.get(x).getUser().getScreenName() + tweetArrayFromJson.get(x).getBody());
-//                                tweets.add(0, tweetArrayFromJson.get(x));
-//                                tweetsArrayAdapter.notifyItemInserted(0);
-//                                rvTimeline.scrollToPosition(0);
-//                            }
-
                             fetchNewAfterInitialLoad = false;
-                            // swipeContainer.setRefreshing(false);
                         }
-                        // Log.d("DEBUG", tweets.size() + "size");
                     }
 
                     @Override
@@ -78,17 +89,36 @@ public class HomeTimelineFragment extends TweetsListFragment {
                                           JSONObject errorResponse) {
 
                         Log.d("DEBUG", errorResponse.toString());
-                        // showToast("Oops! Something went wrong..Please try again after some time");
-
-                        // TODO: Do this in a background thread
-//                        try {
-//                            TimeUnit.SECONDS.sleep(10);
-//                            showToast("Please wait while we attempt to load more tweets");
-//                            // populateTimeline();
-//                        } catch (InterruptedException e) {
-//                            e.printStackTrace();
-//                        }
                     }
                 });
+    }
+
+    private void composeNewTweet() {
+        Log.d("DEBUG", "SHOWING COMPOSER");
+        FragmentManager fm = getFragmentManager();
+        ComposeTweetDialogFragment composeTweetDialogFragment = new ComposeTweetDialogFragment();
+        composeTweetDialogFragment.setTargetFragment(HomeTimelineFragment.this, 300);
+        composeTweetDialogFragment.show(fm, "NEW_TWEET_FRAGMENT");
+    }
+
+    @Override
+    public void onFinishComposeTweet(String composedTweet) {
+        client.postTweet(composedTweet, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                Log.d("DEBUG", response.toString());
+                Tweet t = Tweet.fromJSON(response);
+                addToTop(t);
+            }
+
+            @Override
+            public void onFailure(int statusCode,
+                                  Header[] headers,
+                                  Throwable throwable,
+                                  JSONObject errorResponse) {
+
+                Log.d("DEBUG", errorResponse.toString());
+            }
+        });
     }
 }
