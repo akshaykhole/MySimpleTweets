@@ -47,7 +47,7 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![alt tag](https://github.com/akshaykhole/MySimpleTweets/blob/master/twitter1.1.gif)
+![alt tag](https://github.com/akshaykhole/MySimpleTweets/blob/master/twitter2.1.gif)
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
