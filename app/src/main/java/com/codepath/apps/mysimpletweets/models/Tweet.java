@@ -48,7 +48,7 @@ public class Tweet {
 
             Long tweetId = jsonObject.getLong("id");
 
-            Log.d("TWEETID-", tweetId.toString());
+//            Log.d("TWEETID-", tweetId.toString());
 
             if(minTweetId > tweetId) {
                 minTweetId = tweetId;

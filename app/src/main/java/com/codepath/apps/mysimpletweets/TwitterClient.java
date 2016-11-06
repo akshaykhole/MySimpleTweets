@@ -57,6 +57,7 @@ public class TwitterClient extends OAuthBaseClient {
         RequestParams params = new RequestParams();
         params.put("count", numOfTweetsToFetchOnEveryRequest);
         Log.d("DEBUG", fetchNewAfterInitialLoad + "");
+        Log.d("DEBUG", "Getting more tweets");
 
         if (fetchNewAfterInitialLoad) {
 
@@ -98,7 +99,7 @@ public class TwitterClient extends OAuthBaseClient {
             if (Tweet.minTweetId == Long.MAX_VALUE) {
                 maxTweetId = "9223372036854775000";
             } else {
-                maxTweetId = Tweet.minTweetId + "";
+                maxTweetId = (Tweet.minTweetId - 1) + "";
             }
             params.put("max_id", maxTweetId);
         }
