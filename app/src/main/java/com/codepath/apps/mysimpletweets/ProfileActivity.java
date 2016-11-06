@@ -3,6 +3,7 @@ package com.codepath.apps.mysimpletweets;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -24,7 +25,6 @@ public class ProfileActivity extends AppCompatActivity {
     TextView tvFollowerCount;
     TextView tvFollowingCount;
     ImageView ivProfileImage;
-
     User user;
 
     @Override
@@ -32,19 +32,28 @@ public class ProfileActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         client = TwitterApplication.getRestClient();
-        // Get User account info
-        client.getUserInfo(new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                user = User.fromJson(response);
-                // My current user account's info
-                getSupportActionBar().setTitle("@" + user.getScreenName());
-                populateProfileHeader(user);
-            }
-        });
-
         // Get the screen name
         String screenName = getIntent().getStringExtra("screen_name");
+
+        // Call end-point. Assume null means self profile
+        if(screenName != null) {
+            // Get User account info
+            client.getOtherUserInfo(screenName, new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    onSuccessFetchUserInfo(response);
+                }
+            });
+        } else {
+            // Get User account info
+            client.getUserInfo(new JsonHttpResponseHandler() {
+                @Override
+                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                    onSuccessFetchUserInfo(response);
+                }
+            });
+        }
+
         if(savedInstanceState == null) {
             // Create the user timeline fragment
             UserTimelineFragment fragmentUserTimeline = UserTimelineFragment.newInstance(screenName);
@@ -53,6 +62,13 @@ public class ProfileActivity extends AppCompatActivity {
             ft.replace(R.id.flContainer, fragmentUserTimeline);
             ft.commit();
         }
+    }
+
+    public void onSuccessFetchUserInfo(JSONObject userJsonObject) {
+        user = User.fromJson(userJsonObject);
+        // My current user account's info
+        getSupportActionBar().setTitle("@" + user.getScreenName());
+        populateProfileHeader(user);
     }
 
     public void populateProfileHeader(User user) {

@@ -113,9 +113,6 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, params, handler);
     }
 
-    public void getSelfProfile(AsyncHttpResponseHandler handler) {
-    }
-
     public void getUserTimeline(String screen_name, AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("statuses/user_timeline.json");
         RequestParams params = new RequestParams();
@@ -127,5 +124,14 @@ public class TwitterClient extends OAuthBaseClient {
     public void getUserInfo(AsyncHttpResponseHandler handler) {
         String apiUrl = getApiUrl("account/verify_credentials.json");
         getClient().get(apiUrl, null, handler);
+    }
+
+    public void getOtherUserInfo(String screen_name,
+                                 AsyncHttpResponseHandler handler) {
+        String apiUrl = getApiUrl("users/show.json");
+        RequestParams params = new RequestParams();
+        params.put("count", numOfTweetsToFetchOnEveryRequest);
+        params.put("screen_name", screen_name);
+        getClient().get(apiUrl, params, handler);
     }
 }
