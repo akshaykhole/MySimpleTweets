@@ -9,24 +9,25 @@
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:id="@+id/rlHeader">
+
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:id="@+id/ivProfileImage"
-            android:paddingRight="5dp" />
+            android:paddingRight="10dp"
+            android:paddingLeft="5dp"
+            android:id="@+id/ivProfileImage"/>
 
         <TextView
-            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_toRightOf="@id/ivProfileImage"
+            android:paddingTop="5dp"
             android:id="@+id/tvUserName"/>
 
         <TextView
-            android:text=""
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tvUserName"
@@ -36,7 +37,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/ivProfileImage"
+            android:layout_below="@+id/tvUserTagline"
+            android:layout_toRightOf="@+id/ivProfileImage"
             android:paddingTop="20dp"
             android:id="@+id/llCounts">
 
@@ -44,13 +46,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/tvFollowerCount"
-                android:padding="5dp"/>
+                android:paddingRight="20dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvFollowingCount"
-                android:padding="5dp"/>
+                android:id="@+id/tvFollowingCount"/>
         </LinearLayout>
     </RelativeLayout>
 

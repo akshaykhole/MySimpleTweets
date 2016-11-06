@@ -82,6 +82,6 @@ public class ProfileActivity extends AppCompatActivity {
         tvName.setText(user.getName());
         tvTagline.setText(user.getTagline());
         tvFollowerCount.setText(user.getFollowersCount() + " Followers");
-        tvFollowingCount.setText(user.getFollowingsCount() + " Following");
+        tvFollowingCount.setText("Following " + user.getFollowingsCount());
     }
 }
