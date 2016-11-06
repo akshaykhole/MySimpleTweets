@@ -1,8 +1,14 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.codepath.apps.mysimpletweets.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
 import com.codepath.apps.mysimpletweets.models.Tweet;
@@ -31,6 +37,26 @@ public class UserTimelineFragment extends TweetsListFragment {
         populateTimeline();
     }
 
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup parent,
+                             @Nullable Bundle savedInstanceState) {
+
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+
+        getRvTimeline().addOnScrollListener(
+                new EndlessRecyclerViewScrollListener(getStaggeredGridLayoutManager()) {
+
+                    @Override
+                    public void onLoadMore(int page,
+                                           int totalItemsCount,
+                                           RecyclerView view) {
+                        populateTimeline();
+                    }
+                });
+        return v;
+    }
+
     public void initialize() {
         client = TwitterApplication.getRestClient();
     }
@@ -45,7 +71,8 @@ public class UserTimelineFragment extends TweetsListFragment {
     }
 
     private void populateTimeline() {
-        client.getUserTimeline(getArguments().getString("screen_name"),
+        client.getUserTimeline(fetchNewAfterInitialLoad,
+                getArguments().getString("screen_name"),
                 new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode,
@@ -55,6 +82,7 @@ public class UserTimelineFragment extends TweetsListFragment {
                         ArrayList<Tweet> tweetArrayFromJson = Tweet.fromJSONArray(jsonArray);
 
                         if(!fetchNewAfterInitialLoad) {
+
                             addAll(tweetArrayFromJson);
                         } else {
                             Log.d("DEBUG", "INSERTING NEW STUFF TO TIMELINE" + tweetArrayFromJson.size());

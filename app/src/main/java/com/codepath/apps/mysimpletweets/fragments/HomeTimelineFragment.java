@@ -1,13 +1,19 @@
 package com.codepath.apps.mysimpletweets.fragments;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.codepath.apps.mysimpletweets.ComposeTweetDialogFragment;
+import com.codepath.apps.mysimpletweets.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.mysimpletweets.R;
 import com.codepath.apps.mysimpletweets.TwitterApplication;
 import com.codepath.apps.mysimpletweets.TwitterClient;
@@ -32,6 +38,24 @@ public class HomeTimelineFragment extends TweetsListFragment
         super.onCreate(savedInstanceState);
         initialize();
         populateTimeline();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater,
+                             @Nullable ViewGroup parent,
+                             @Nullable Bundle savedInstanceState) {
+
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+
+        getRvTimeline().addOnScrollListener(
+                new EndlessRecyclerViewScrollListener(getStaggeredGridLayoutManager()) {
+
+                    @Override
+                    public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                        populateTimeline();
+                    }
+                });
+        return v;
     }
 
     @Override

@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class Tweet {
     public static long minTweetId = Long.MAX_VALUE; // crashes the twitter API lol
-    public static long maxTweetId = 1;
+    public static long maxTweetId = 0;
 
     private String body;
     private String uid;
@@ -47,6 +47,8 @@ public class Tweet {
             tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
 
             Long tweetId = jsonObject.getLong("id");
+
+            Log.d("TWEETID-", tweetId.toString());
 
             if(minTweetId > tweetId) {
                 minTweetId = tweetId;

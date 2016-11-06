@@ -113,11 +113,35 @@ public class TwitterClient extends OAuthBaseClient {
         getClient().post(apiUrl, params, handler);
     }
 
-    public void getUserTimeline(String screen_name, AsyncHttpResponseHandler handler) {
+    public void getUserTimeline(Boolean fetchNewAfterInitialLoad,
+                                String screen_name,
+                                AsyncHttpResponseHandler handler) {
+
+        Log.d("DEBUG", "FETCHING USER TIMELINE");
         String apiUrl = getApiUrl("statuses/user_timeline.json");
         RequestParams params = new RequestParams();
         params.put("count", numOfTweetsToFetchOnEveryRequest);
         params.put("screen_name", screen_name);
+
+        if (fetchNewAfterInitialLoad) {
+
+            params.put("since_id", Tweet.maxTweetId);
+
+        } else {
+            params.put("since_id", "1");
+
+            // Sending Long.MAX_VALUE crashes the twitter API
+            String maxTweetId;
+
+            if (Tweet.minTweetId == Long.MAX_VALUE) {
+                maxTweetId = "9223372036854775000";
+            } else {
+                maxTweetId = (Tweet.minTweetId - 1) + "";
+            }
+
+            params.put("max_id", maxTweetId);
+        }
+
         getClient().get(apiUrl, params, handler);
     }
 
